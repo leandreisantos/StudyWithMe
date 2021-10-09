@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <ScrollView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardCornerRadius="100dp"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center_vertical"
+                android:elevation="8dp"
+                app:cardElevation="8dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/iv_profile"
+                    android:clickable="true"
+                    android:scaleType="fitCenter"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_username_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/cv_profile"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="Leandrei M. Santos"
+                android:layout_marginTop="20dp"
+                android:textSize="25sp"
+                android:fontFamily="sans-serif-black"/>
+
+            <TableRow
+                android:id="@+id/tb1"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/tv_username_profile"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/lbl_profession"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profession"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/tb1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"/>
+            <TextView
+                android:id="@+id/tv_prof"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Programmer"
+              android:fontFamily="sans-serif-black"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/lbl_profession"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/lbl_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_prof"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"/>
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Official@gmail.com"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-black"
+                app:layout_constraintTop_toBottomOf="@id/lbl_email"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/lbl_Interest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Interest"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_email"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"/>
+            <TextView
+                android:id="@+id/tv_interest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Android studio"
+                android:fontFamily="sans-serif-black"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/lbl_Interest"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/lbl_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_interest"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"/>
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I love programming"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-black"
+                app:layout_constraintTop_toBottomOf="@id/lbl_about"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_edit_profile"
+                app:layout_constraintTop_toBottomOf="@id/tv_about"
+                app:layout_constraintRight_toLeftOf="@id/cv_la"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Profile"
+                android:textSize="20sp"
+                android:layout_marginTop="90dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_la"
+                app:layout_constraintTop_toBottomOf="@id/tv_about"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="50dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="80dp"
+                app:cardBackgroundColor="@color/red">
+
+                <ImageButton
+                    android:id="@+id/edit_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/arrow_icon"
+                    android:background="@color/red"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

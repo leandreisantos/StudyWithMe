@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".RegisterActivity">
+
+    <ScrollView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            
+            <ImageView
+                android:id="@+id/btn_back_rg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/back_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"/>
+
+
+            <TextView
+                android:id="@+id/tv_ca_rg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Account"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="160dp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif"
+                android:textSize="25dp"/>
+
+            <TextView
+                android:id="@+id/tv_ca2_rg"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_ca_rg"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the first step to join with us!"/>
+
+            <EditText
+                android:id="@+id/et_username_rg"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_ca2_rg"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:hint="Username"
+                android:layout_marginTop="50dp"
+                android:inputType="textEmailAddress"
+                android:drawableStart="@drawable/username_logo"
+                android:drawablePadding="10dp"/>
+
+            <EditText
+                android:id="@+id/et_password_rg"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/et_username_rg"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:drawableStart="@drawable/vision_logo"
+                android:drawablePadding="10dp"/>
+
+            <EditText
+                android:id="@+id/et_password2_rg"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/et_password_rg"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:drawableStart="@drawable/vision_logo"
+                android:drawablePadding="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_rg"
+                app:layout_constraintTop_toBottomOf="@id/et_password2_rg"
+                app:layout_constraintRight_toLeftOf="@id/cv_la"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:textSize="20sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_la"
+                app:layout_constraintTop_toBottomOf="@id/et_password2_rg"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="50dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/red">
+
+                <ImageButton
+                    android:id="@+id/sign_up_rg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/arrow_icon"
+                    android:background="@color/red"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

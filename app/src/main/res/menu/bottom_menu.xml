@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Dashboard"
+        android:icon="@drawable/dashboard_icon"
+        app:showAsAction="always"
+        android:id="@+id/dashboard_bottom"/>
+
+    <item android:title="Profile"
+        android:icon="@drawable/username_logo"
+        app:showAsAction="always"
+        android:id="@+id/Profile_bottom"/>
+
+    <item android:title="Notification"
+        android:icon="@drawable/notifi_icon"
+        app:showAsAction="always"
+        android:id="@+id/notification_bottom"/>
+
+    <item android:title="Settings"
+        android:icon="@drawable/settings_icon"
+        app:showAsAction="always"
+        android:id="@+id/settings_bottom"/>
+
+</menu>
