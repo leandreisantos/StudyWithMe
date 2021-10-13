@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Study With Me</string>
+
+    <!--creatpost-->
+    <string name="cp_title">Ask a Questions</string>
+    <string name="cp_title2">Create Post</string>
+    <string name="cp_title_et">Title</string>
+    <string name="cp_title_et_hint">Be specific in your title</string>
+    <string name="cp_desc_et">Description</string>
+    <string name="cp_desc_et_hint">Include all the information</string>
+    <string name="cp_iv">Add photo</string>
+    <string name="cp_iv_desc">Optional</string>
+    <string name="cp_upload">Upload</string>
 </resources>
