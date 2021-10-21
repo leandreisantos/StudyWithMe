@@ -139,6 +139,8 @@ public class CreatePost extends AppCompatActivity {
             postMember.setType("text");
             postMember.setDesc(d);
             postMember.setTitle(t);
+            postMember.setName(name);
+
 
             String id1 = db3.push().getKey();
             db3.child(id1).setValue(postMember);

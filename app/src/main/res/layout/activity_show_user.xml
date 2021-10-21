@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    tools:context=".ShowUser">
 
     <ScrollView
         app:layout_constraintTop_toTopOf="parent"
@@ -79,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Programmer"
-              android:fontFamily="sans-serif-black"
+                android:fontFamily="sans-serif-black"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/lbl_profession"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -192,11 +193,5 @@
 
 
     </ScrollView>
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

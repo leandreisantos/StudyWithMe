@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Study With Me</string>
 
+    <string name="sample">Sample text</string>
+
+
+    <!--bottom menu-->
+    <string name="home_bm">Home</string>
+    <string name="profile_bm">Profile</string>
+    <string name="notifications_bm">Notifications</string>
+    <string name="settings_bm">Settings</string>
+
     <!--creatpost-->
     <string name="cp_title">Ask a Questions</string>
     <string name="cp_title2">Create Post</string>
@@ -11,4 +20,19 @@
     <string name="cp_iv">Add photo</string>
     <string name="cp_iv_desc">Optional</string>
     <string name="cp_upload">Upload</string>
+
+    <!--dashboard-->
+    <string name="likecount">0</string>
+    <string name="commentcount">0</string>
+    <string name="hint">Search same insterest post</string>
+
+    <!--Settings-->
+    <string name="title_settings">Settings</string>
+    <string name="edit_settings">Edit Profile</string>
+    <string name="about_settings">About Study with me</string>
+    <string name="help_settings">Help</string>
+    <string name="report_settings">Report issue</string>
+    <string name="logout_settings">Logout</string>
+
+
 </resources>

@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.Profile_bottom:
                 selected = new ProfileFragment();
                 break;
+            case R.id.settings_bottom:
+                selected = new SettingsFragment();
+                break;
+            case R.id.notification_bottom:
+                selected = new NotificationsFragment();
+                break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,selected).commit();
         return true;
