@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/secondary_white"
+    android:layout_height="wrap_content"
+    android:background="@drawable/comment_border"
+    android:padding="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <androidx.cardview.widget.CardView
         app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_name_comment_item"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginStart="10dp"
         android:text="@string/sample"
         android:textSize="15sp"/>
@@ -45,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_time_comment_item"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="Time"
         android:textStyle="bold"
         android:textSize="8sp"/>
@@ -68,7 +70,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_dislike_24"
+        android:src="@drawable/like_icon"
         android:background="@android:color/transparent"
         android:id="@+id/likebutton_comment_item"/>
     <TextView
@@ -79,7 +81,7 @@
         android:layout_height="wrap_content"
         android:text="likes"
         android:textSize="12sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:clickable="true"
         android:id="@+id/tv_like_comment_item"
         android:padding="4dp"

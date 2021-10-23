@@ -27,9 +27,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         register = findViewById(R.id.tv_register_la);
-        username = findViewById(R.id.et_username_la);
-        pass = findViewById(R.id.et_password_la);
-        signIn = findViewById(R.id.sign_in_la);
+        username = findViewById(R.id.inputEmail);
+        pass = findViewById(R.id.inputPassword);
+        signIn = findViewById(R.id.buttonSignIn);
 
         register.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);

@@ -1,24 +1,39 @@
 package com.example.study_with_me;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +51,7 @@ public class DashboardFragment extends Fragment {
 
     databaseReference dbr = new databaseReference();
     FirebaseDatabase database = FirebaseDatabase.getInstance(dbr.keyDb());
-    DatabaseReference reference,likesref,likelist,ntref;
+    DatabaseReference reference,likesref,likelist,ntref,db1;
 
     LinearLayoutManager linearLayoutManager;
 
@@ -62,6 +77,9 @@ public class DashboardFragment extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentuid = user.getUid();
+
+        db1 = database.getReference("All images").child(currentuid);
+
 
         reference = database.getReference("All post");
         likesref = database.getReference("post likes");
@@ -93,6 +111,20 @@ public class DashboardFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        DocumentReference referenceuser;
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+        referenceuser = firestore.collection("user").document(currentuid);
+
+        referenceuser.get()
+                .addOnCompleteListener(task -> {
+                    if(!task.getResult().exists()) {
+                        Intent intent = new Intent(getActivity(), CreateProfile.class);
+                        startActivity(intent);
+                    }
+                });
+
+
         documentReference.get()
                 .addOnCompleteListener(task -> {
                     if(task.getResult().exists()){
@@ -114,7 +146,7 @@ public class DashboardFragment extends Fragment {
                         final String postkey = getRef(position).getKey();
 
                         holder.SetPost(getActivity(),model.getId(),model.getUrl(),model.getPostUri(),model.getTime(),model.getDate(),model.getUid(),
-                                model.getType(),model.getDesc(),model.getTitle(),model.getName());
+                                model.getType(),model.getDesc(),model.getTitle(),model.getName(),model.getPostkey());
 
                         String name = getItem(position).getName();
                         String url = getItem(position).getPostUri();
@@ -123,12 +155,16 @@ public class DashboardFragment extends Fragment {
                         String id = getItem(position).getId();
                         String userid = getItem(position).getUid();
                         String desc = getItem(position).getDesc();
+                        String post_key = getItem(position).getPostkey();
+                        String title = getItem(position).getTitle();
+                        String desc_p = getItem(position).getDesc();
 
                         holder.iv_post.setOnClickListener(v -> ShowPost(url,userid,postkey,name));
 
                         holder.likechecker(postkey);
+                        holder.commentchecker(postkey);
 
-                        holder.tv_more.setOnClickListener(v -> showDialog(type,id));
+                        holder.tv_more.setOnClickListener(v -> showDialog(type,id,name,url,time,post_key,title,desc_p));
 
                         holder.tv_like.setOnClickListener(v -> {
                             likechecker = true;
@@ -237,7 +273,7 @@ public class DashboardFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void showDialog(String type,String id) {
+    private void showDialog(String type,String id,String name,String url,String time,String post_key,String title,String desc_p) {
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.more_layout,null);
@@ -246,6 +282,7 @@ public class DashboardFragment extends Fragment {
         TextView share = view.findViewById(R.id.share_tv_post);
         TextView delete = view.findViewById(R.id.delete_tv_post);
         TextView copyurl = view.findViewById(R.id.copyurl_tv_post);
+        TextView report = view.findViewById(R.id.report_tv_post);
 
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
@@ -253,18 +290,89 @@ public class DashboardFragment extends Fragment {
 
         alertDialog.show();
 
-        if(type.equals("text")){
-            download.setVisibility(View.GONE);
-        }else{
-            download.setVisibility(View.VISIBLE);
-        }
+        if(type.equals("text")) download.setVisibility(View.GONE);
+        else download.setVisibility(View.VISIBLE);
 
         if(!(id.equals(currentuid))){
             edit.setVisibility(View.GONE);
             delete.setVisibility(View.GONE);
+            report.setVisibility(View.VISIBLE);
         }else if(id.equals(currentuid)){
             edit.setVisibility(View.VISIBLE);
             delete.setVisibility(View.VISIBLE);
+            report.setVisibility(View.GONE);
         }
+
+        share.setOnClickListener(v -> {
+            String sharetext = name + "\n" + "\n" + url;
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Intent.EXTRA_TEXT,sharetext);
+            intent.setType("text/plain");
+            startActivity(intent.createChooser(intent,"share via"));
+
+            alertDialog.dismiss();
+        });
+
+        delete.setOnClickListener(v -> {
+
+            Query query = db1.orderByChild("time").equalTo(time);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    for(DataSnapshot dataSnapshot1: snapshot.getChildren()){
+                        dataSnapshot1.getRef().removeValue();
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            Query query3 = reference.orderByChild("time").equalTo(time);
+            query3.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    for(DataSnapshot dataSnapshot1: snapshot.getChildren()){
+                        dataSnapshot1.getRef().removeValue();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            if(type.equals("text")) Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+            else{
+                StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+                reference.delete().addOnSuccessListener(aVoid -> {
+                });
+            }
+
+            Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+            alertDialog.dismiss();
+        });
+
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ReportPost.class);
+                intent.putExtra("id_post",post_key);
+                intent.putExtra("id_report",currentuid);
+                intent.putExtra("t",title);
+                intent.putExtra("d",desc_p);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
 }

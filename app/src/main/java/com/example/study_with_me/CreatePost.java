@@ -131,6 +131,9 @@ public class CreatePost extends AppCompatActivity {
 
 
         if(!(TextUtils.isEmpty(d) && TextUtils.isEmpty(d))&&selectedUri == null){
+
+            String id1 = db3.push().getKey();
+
             postMember.setId(currentuid);
             postMember.setUrl(url);
             postMember.setTime(savetime);
@@ -140,9 +143,8 @@ public class CreatePost extends AppCompatActivity {
             postMember.setDesc(d);
             postMember.setTitle(t);
             postMember.setName(name);
+            postMember.setPostkey(id1);
 
-
-            String id1 = db3.push().getKey();
             db3.child(id1).setValue(postMember);
 
             Toast.makeText(this, "post upload!", Toast.LENGTH_SHORT).show();
@@ -168,6 +170,7 @@ public class CreatePost extends AppCompatActivity {
                     Uri downloadUri = task.getResult();
 
                     if(type.equals("iv")) {
+                        String id1 = db3.push().getKey();
 
                         postMember.setId(currentuid);
                         postMember.setUrl(url);
@@ -179,12 +182,12 @@ public class CreatePost extends AppCompatActivity {
                         postMember.setDesc(d);
                         postMember.setTitle(t);
                         postMember.setName(name);
+                        postMember.setPostkey(id1);
 
                         //for image
                         String id = db1.push().getKey();
                         db1.child(id).setValue(postMember);
                         //for both
-                        String id1 = db3.push().getKey();
                         db3.child(id1).setValue(postMember);
 
 

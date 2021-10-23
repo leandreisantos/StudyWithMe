@@ -11,6 +11,7 @@ public class PostMember {
     String desc;
     String title;
     String name;
+    String postkey;
 
     public String getId() {
         return id;
@@ -89,5 +90,13 @@ public class PostMember {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPostkey() {
+        return postkey;
+    }
+
+    public void setPostkey(String postkey) {
+        this.postkey = postkey;
     }
 }

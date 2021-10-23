@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PostViewholder extends RecyclerView.ViewHolder{
 
     ImageView iv,iv_post;
-    TextView tv_name,tv_title,tv_desc,tv_date,tv_more,tv_like,tv_like_c,commentbtn;
+    TextView tv_name,tv_title,tv_desc,tv_date,tv_more,tv_like,tv_like_c,commentbtn,tv_comment;
     CardView cv;
     int likescount,commentcount;
 
@@ -36,7 +36,7 @@ public class PostViewholder extends RecyclerView.ViewHolder{
     }
 
     public void SetPost(FragmentActivity activity, String id, String url, String postUri, String time,String date,String uid,
-                        String type, String desc,String title,String name){
+                        String type, String desc,String title,String name,String postkey){
 
         iv = itemView.findViewById(R.id.iv_profile_pl);
         iv_post = itemView.findViewById(R.id.iv_post_lp);
@@ -95,6 +95,26 @@ public class PostViewholder extends RecyclerView.ViewHolder{
                     likescount = (int)snapshot.child(postKey).getChildrenCount();
                     tv_like_c.setText(Integer.toString(likescount));
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void commentchecker(String postKey) {
+
+        tv_comment = itemView.findViewById(R.id.tv_commentcount_pl);
+        commentref = database.getReference("All posts").child(postKey).child("Comments");
+
+        commentref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    commentcount = (int)snapshot.getChildrenCount();
+                    tv_comment.setText(Integer.toString(commentcount));
+
             }
 
             @Override

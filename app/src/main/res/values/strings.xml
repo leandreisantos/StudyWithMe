@@ -34,5 +34,19 @@
     <string name="report_settings">Report issue</string>
     <string name="logout_settings">Logout</string>
 
+    <!--Strings for On Boarding Screen -->
+    <string name="first_slide_title">Study Together using Video Call</string>
+    <string name="second_slide_title">Post and ask a question to public to help you</string>
+    <string name="third_slide_title">Create a team</string>
+    <string name="fourth_slide_title">Video Chat with your team</string>
+    <string name="fifth_slide_title">Get more subscriber</string>
+
+    <!---Descriptopn-->
+    <string name="first_slide_desc">You can video call all people that same interest like you and study together</string>
+    <string name="second_slide_desc">Public post to disscuss</string>
+    <string name="third_slide_desc">Build a team with other players around the world</string>
+    <string name="fourth_slide_desc">Now you can easily communicate with your team by a video chat or group chat</string>
+    <string name="fifth_slide_desc">Upload your highlights and get more subcriber to become rank 1 in leaderboard</string>
+
 
 </resources>

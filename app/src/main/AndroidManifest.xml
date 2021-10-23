@@ -14,7 +14,9 @@
         android:theme="@style/Theme.Study_With_Me"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".CommentsActivity"></activity>
+        <activity android:name=".ReportPost"></activity>
+        <activity android:name=".ReportIssue" />
+        <activity android:name=".CommentsActivity" />
         <activity android:name=".ShowUser" />
         <activity android:name=".ViewImage" />
         <activity android:name=".CreatePost" />
