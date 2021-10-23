@@ -52,6 +52,12 @@ public class ProfileFragment extends Fragment {
         email = getActivity().findViewById(R.id.tv_email);
         interest = getActivity().findViewById(R.id.tv_interest);
         about= getActivity().findViewById(R.id.tv_about);
+        edit= getActivity().findViewById(R.id.edit_profile);
+
+        edit.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(),EditProfile.class);
+            startActivity(intent);
+        });
 
     }
 

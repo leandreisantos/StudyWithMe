@@ -14,7 +14,10 @@
         android:theme="@style/Theme.Study_With_Me"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ReportPost"></activity>
+        <activity
+            android:name=".EditProfile"
+            android:exported="false" />
+        <activity android:name=".ReportPost" />
         <activity android:name=".ReportIssue" />
         <activity android:name=".CommentsActivity" />
         <activity android:name=".ShowUser" />

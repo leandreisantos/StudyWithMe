@@ -79,7 +79,7 @@
             android:text="0"
             android:fontFamily="@font/baloo"
             app:layout_constraintLeft_toRightOf="@id/likebutton_posts"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -102,7 +102,7 @@
             android:text="0"
             android:fontFamily="@font/baloo"
             app:layout_constraintLeft_toRightOf="@id/commentbutton_posts"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
