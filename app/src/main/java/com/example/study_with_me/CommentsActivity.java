@@ -166,11 +166,16 @@ public class CommentsActivity extends AppCompatActivity {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         String currentUserId = user.getUid();
                         final String postkey = getRef(position).getKey();
+
                         String time = getItem(position).getTime();
 
-                        holder.setComment(getApplication(),model.getComment(),model.getTime(),model.getUrl(),model.getUsername(),model.getUid());
+                        holder.setComment(getApplication(),model.getComment(),model.getTime(),model.getUrl(),model.getUsername(),model.getUid(),
+                                model.getPostkey());
 
-                        holder.LikeChecker(postkey);
+                        String post_key = getItem(position).getPostkey();
+
+
+                        holder.LikeChecker(post_key);
 
                         holder.delete.setOnClickListener(view -> {
                             Query query = Commentref.orderByChild("time").equalTo(time);

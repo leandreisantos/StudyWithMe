@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 public class SettingsFragment extends Fragment {
     
-    TextView logout,settings,report;
+    TextView logout,settings,report,edit;
     FirebaseAuth mAuth;
 
     @Nullable
@@ -35,6 +34,7 @@ public class SettingsFragment extends Fragment {
         logout = getActivity().findViewById(R.id.tv_logout_st);
         settings = getActivity().findViewById(R.id.tv_about_st);
         report = getActivity().findViewById(R.id.tv_report_st);
+        edit = getActivity().findViewById(R.id.tv_edit_st);
 
         logout.setOnClickListener(v -> showlogout());
         settings.setOnClickListener(v -> {
@@ -44,6 +44,10 @@ public class SettingsFragment extends Fragment {
         report.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(),ReportIssue.class);
             startActivity(intent);
+        });
+        edit.setOnClickListener(v -> {
+            Intent itent = new Intent(getActivity(),EditProfile.class);
+            startActivity(itent);
         });
         
 
@@ -64,8 +68,6 @@ public class SettingsFragment extends Fragment {
 //            FirebaseDatabase.getInstance(dbr.keyDb()).getReference("Token").child(uid).child("token").removeValue();
             startActivity(new Intent(getActivity(),LoginActivity.class));
         });
-        cancel_tv.setOnClickListener((View v) -> {
-            alertDialog.dismiss();
-        });
+        cancel_tv.setOnClickListener((View v) -> alertDialog.dismiss());
     }
 }

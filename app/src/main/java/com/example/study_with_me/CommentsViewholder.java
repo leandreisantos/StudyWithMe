@@ -22,7 +22,7 @@ public class CommentsViewholder extends RecyclerView.ViewHolder {
 
     ImageView imageView;
     TextView nameTv,timeTv,ansTv,tv_likes,delete;
-    ImageButton likebutton;
+    TextView likebutton;
     int likescount ;
     DatabaseReference databaseReference;
     FirebaseDatabase database;
@@ -33,7 +33,7 @@ public class CommentsViewholder extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public void setComment(Application application, String comment, String time, String url, String username, String uid){
+    public void setComment(Application application, String comment, String time, String url, String username, String uid,String postkey){
 
         imageView = itemView.findViewById(R.id.imageView_comment_item);
         nameTv = itemView.findViewById(R.id.tv_name_comment_item);
@@ -70,14 +70,14 @@ public class CommentsViewholder extends RecyclerView.ViewHolder {
 
                 if (snapshot.child(postkey).hasChild(currentUserId)){
                     likescount = (int)snapshot.child(postkey).getChildrenCount();
-                    tv_likes.setText(Integer.toString(likescount)+"Likes");
-                    likebutton.setImageResource(R.drawable.like_icon);
+                    tv_likes.setText(Integer.toString(likescount));
+                    likebutton.setBackgroundResource(R.drawable.liked_icon);
 
 
                 }else {
                     likescount = (int)snapshot.child(postkey).getChildrenCount();
                     tv_likes.setText(Integer.toString(likescount)+"Likes");
-                    likebutton.setImageResource(R.drawable.liked_icon);
+                    likebutton.setBackgroundResource(R.drawable.like_icon);
 
                 }
             }

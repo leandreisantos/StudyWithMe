@@ -2,7 +2,12 @@ package com.example.study_with_me;
 
 public class CommentsMember {
 
-    String comment,time,url,username,uid;
+    String comment;
+    String time;
+    String url;
+    String username;
+    String uid;
+    String postkey;
 
     public CommentsMember(){
 
@@ -46,5 +51,13 @@ public class CommentsMember {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getPostkey() {
+        return postkey;
+    }
+
+    public void setPostkey(String postkey) {
+        this.postkey = postkey;
     }
 }
