@@ -31,7 +31,7 @@ public class CommentsActivity extends AppCompatActivity {
     String url,name,post_key,userid,bundleuid;
     String name_result,age_result,Url,uid,bio_result,web_result,email_result,usertoken,desc;
     RecyclerView recyclerView;
-    TextView commentsBtn;
+    TextView commentsBtn,close;
     EditText commentsEdittext;
 
     DatabaseReference Commentref,userCommentref,likesref,ntref;
@@ -72,6 +72,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         commentsBtn = findViewById(R.id.btn_comments);
         commentsEdittext = findViewById(R.id.et_comments);
+        close = findViewById(R.id.tv_close_ac);
 
 
         recyclerView = findViewById(R.id.recycler_view_comments);
@@ -88,6 +89,10 @@ public class CommentsActivity extends AppCompatActivity {
         ntref = database.getReference("notification").child(bundleuid);
 
         commentsBtn.setOnClickListener(view -> comment());
+
+        close.setOnClickListener(v -> {
+         onBackPressed();
+        });
 
 
     }

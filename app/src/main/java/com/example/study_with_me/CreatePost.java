@@ -49,7 +49,7 @@ public class CreatePost extends AppCompatActivity {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String currentuid = user.getUid();
 
-    DatabaseReference db1,db3;
+    DatabaseReference db1,db3,db2;
 
     private static final int PICK_FILE = 1;
     private Uri selectedUri;
@@ -58,15 +58,23 @@ public class CreatePost extends AppCompatActivity {
 
     String type,name,url;
     PostMember postMember;
+    String interest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            interest = extras.getString("i").toUpperCase();
+        }else Toast.makeText(this, "no interest", Toast.LENGTH_SHORT).show();
+
+
         postMember = new PostMember();
 
-        db3 = database.getReference("All post");
+        db3 = database.getReference("All post").child(interest);
+        db2 = database.getReference("All post").child("public");
         db1 = database.getReference("All images").child(currentuid);
         storageReference = FirebaseStorage.getInstance().getReference("User posts");
 
@@ -100,7 +108,7 @@ public class CreatePost extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_FILE || resultCode == RESULT_OK || data!= null || data.getData() != null){
+        if(requestCode == PICK_FILE && resultCode == RESULT_OK && data!= null && data.getData() != null){
 
                 selectedUri = data.getData();
                 Picasso.get().load(selectedUri).into(iv);
@@ -145,7 +153,9 @@ public class CreatePost extends AppCompatActivity {
             postMember.setName(name);
             postMember.setPostkey(id1);
 
+
             db3.child(id1).setValue(postMember);
+            db2.child(id1).setValue(postMember);
 
             Toast.makeText(this, "post upload!", Toast.LENGTH_SHORT).show();
             Toast.makeText(CreatePost.this, "post uploaded", Toast.LENGTH_SHORT).show();
@@ -189,6 +199,7 @@ public class CreatePost extends AppCompatActivity {
                         db1.child(id).setValue(postMember);
                         //for both
                         db3.child(id1).setValue(postMember);
+                        db2.child(id1).setValue(postMember);
 
 
                         Toast.makeText(CreatePost.this, "post uploaded", Toast.LENGTH_SHORT).show();
@@ -209,8 +220,6 @@ public class CreatePost extends AppCompatActivity {
         super.onStart();
 
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String currentuid = user.getUid();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("user").document(currentuid);

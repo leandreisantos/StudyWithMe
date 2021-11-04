@@ -3,17 +3,20 @@ package com.example.study_with_me;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -39,6 +42,7 @@ public class CreateProfile extends AppCompatActivity {
     DatabaseReference databaseReference;
     DocumentReference documentReference;
     AlluserMember member;
+    ProgressBar pb;
 
     Uri imageUri;
     UploadTask uploadTask;
@@ -49,6 +53,8 @@ public class CreateProfile extends AppCompatActivity {
     ImageView dp;
     EditText etname,etInterest,etProfession,etEmail,etAbout;
     ImageButton start;
+
+    private static final int PICK_FILE = 1;
 
 
     @Override
@@ -72,32 +78,34 @@ public class CreateProfile extends AppCompatActivity {
         etInterest = findViewById(R.id.et_interest_cp);
         etAbout = findViewById(R.id.et_about_cp);
         start = findViewById(R.id.start_cp);
+        pb = findViewById(R.id.pv_cp);
 
 
         start.setOnClickListener(v -> uploadData());
 
         dp.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent,PICK_IMAGE);
+
+            chooseImage();
         });
 
+    }
+
+    private void chooseImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,PICK_FILE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        try {
-            if(requestCode == PICK_IMAGE || resultCode == RESULT_OK||data != null||data.getData()!=null){
+            if(requestCode == PICK_FILE && resultCode == RESULT_OK && data!= null && data.getData() != null){
                 imageUri = data.getData();
                 Picasso.get().load(imageUri).into(dp);
             }
 
-        }catch (Exception e){
-            Toast.makeText(this, "Error"+e, Toast.LENGTH_SHORT).show();
-        }
     }
 
     private String getFileExt(Uri uri){
@@ -108,6 +116,7 @@ public class CreateProfile extends AppCompatActivity {
 
 
     private void uploadData() {
+        pb.setVisibility(View.GONE);
         String name = etname.getText().toString();
         String prof = etProfession.getText().toString();
         String email = etEmail.getText().toString();
@@ -165,6 +174,7 @@ public class CreateProfile extends AppCompatActivity {
             });
 
         }else{
+            pb.setVisibility(View.INVISIBLE);
             Toast.makeText(this, "Please fill all Fields", Toast.LENGTH_SHORT).show();
         }
     }

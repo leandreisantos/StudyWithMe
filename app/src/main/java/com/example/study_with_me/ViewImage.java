@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ public class ViewImage extends AppCompatActivity {
 
     String id,url,postkey,name;
     ImageView iv_main;
-    TextView clike,ccomment;
+    TextView clike,ccomment,back;
     ImageButton like,comment;
 
     databaseReference dbr = new databaseReference();
@@ -58,9 +59,11 @@ public class ViewImage extends AppCompatActivity {
         iv_main = findViewById(R.id.iv_vm);
         like = findViewById(R.id.likebutton_posts);
         comment = findViewById(R.id.commentbutton_posts);
+        back = findViewById(R.id.back_vm);
 
         clike = findViewById(R.id.tv_likes_view_im);
         ccomment = findViewById(R.id.tv_comment_view_im);
+        back.setOnClickListener(v -> onBackPressed());
 
         like.setOnClickListener(v -> likefunction());
         comment.setOnClickListener(v -> {

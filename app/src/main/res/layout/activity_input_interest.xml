@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InputInterestActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_back_interest"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/back_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_title_interest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Interest"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textSize="20sp"
+                android:layout_marginTop="5dp"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/interestlot"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_interest"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="20dp"
+                app:lottie_rawRes="@raw/intlot"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"/>
+
+            <TextView
+                android:id="@+id/tv_lbl_desc"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Input some interest to show your post , see other post and call other with same interest like you"
+                app:layout_constraintTop_toBottomOf="@id/interestlot"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textAlignment="center"
+                android:textColor="@color/grey"/>
+
+            <EditText
+                android:id="@+id/et_interest_ii"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_card"
+                app:layout_constraintTop_toBottomOf="@id/tv_lbl_desc"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:padding="10dp"
+                android:hint="Input Some Interest"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"/>
+
+            <TextView
+                android:id="@+id/tv_submit_ii"
+                app:layout_constraintTop_toBottomOf="@id/et_interest_ii"
+                app:layout_constraintRight_toLeftOf="@id/cv_la"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:textSize="20sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_la"
+                app:layout_constraintTop_toBottomOf="@id/et_interest_ii"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="50dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/red">
+
+                <ImageButton
+                    android:id="@+id/ib_submit_ii"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/arrow_icon"
+                    android:background="@color/green"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

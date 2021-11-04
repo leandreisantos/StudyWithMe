@@ -1,23 +1,19 @@
 package com.example.study_with_me;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,13 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,22 +38,24 @@ public class DashboardFragment extends Fragment {
 
     SwipeRefreshLayout sp;
 
-    TextView addTv;
+    TextView addTv,interest,add_interest;
     RecyclerView recyclerView;
+    EditText etSearch;
 
     databaseReference dbr = new databaseReference();
     FirebaseDatabase database = FirebaseDatabase.getInstance(dbr.keyDb());
-    DatabaseReference reference,likesref,likelist,ntref,db1;
+    DatabaseReference reference,likesref,likelist,ntref,db1,reference_user;
 
     LinearLayoutManager linearLayoutManager;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference documentReference;
 
-    String currentuid,interest_result;
+    String currentuid;
+
 
     Boolean likechecker = false;
-
+    public String interestResult="";
     AlluserMember userMember;
     NewMember newMember;
 
@@ -75,16 +69,33 @@ public class DashboardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+//        Bundle extras = getActivity().getIntent().getExtras();
+//        if(extras != null){
+//            bundle_interest = extras.getString("i");
+//            reference = database.getReference("All post").child(bundle_interest);
+//        }else{
+//            reference = database.getReference("All post").child("public");
+//        }
+
+
+        interest = getActivity().findViewById(R.id.tv_int_int);
+
+
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentuid = user.getUid();
 
         db1 = database.getReference("All images").child(currentuid);
 
 
-        reference = database.getReference("All post");
         likesref = database.getReference("post likes");
         ntref = database.getReference("notification").child(currentuid);
         documentReference = db.collection("user").document(currentuid);
+
+        reference_user = database.getReference("All users").child(currentuid);
+
+        add_interest = getActivity().findViewById(R.id.tv_edit_int_dash);
+        etSearch = getActivity().findViewById(R.id.et_search_dash);
 
         userMember = new AlluserMember();
         newMember = new NewMember();
@@ -98,18 +109,23 @@ public class DashboardFragment extends Fragment {
         linearLayoutManager.setStackFromEnd(true);
 
         addTv = getActivity().findViewById(R.id.tv_add_dash);
-        addTv.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(),CreatePost.class);
-            startActivity(intent);
-        });
 
         sp.setOnRefreshListener(() -> sp.setRefreshing(false));
 
+
+
+    }
+
+    private void goToInt(String inte) {
+        Intent intent = new Intent(getActivity(),InputInterestActivity.class);
+        intent.putExtra("i",inte);
+        startActivity(intent);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
 
         DocumentReference referenceuser;
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -121,17 +137,180 @@ public class DashboardFragment extends Fragment {
                     if(!task.getResult().exists()) {
                         Intent intent = new Intent(getActivity(), CreateProfile.class);
                         startActivity(intent);
+                    }else{
+                        interestResult = task.getResult().getString("interest").toUpperCase();
+                        if(interestResult!=null){
+                            doActivity(interestResult);
+                        }
+
                     }
                 });
 
+    }
 
-        documentReference.get()
-                .addOnCompleteListener(task -> {
-                    if(task.getResult().exists()){
-                        interest_result = task.getResult().getString("name");
-                    }
-                });
+    private void doActivity(String interest_result) {
 
+
+        reference = database.getReference("All post").child(interest_result);
+
+        interest.setText(interest_result);
+
+        interest.setOnClickListener(v -> goToInt(interest_result));
+
+        addTv.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(),CreatePost.class);
+            intent.putExtra("i",interest_result);
+            startActivity(intent);
+        });
+
+        add_interest.setOnClickListener(v -> goToInt(interest_result));
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String query = etSearch.getText().toString();
+                Query search = reference.orderByChild("title").startAt(query).endAt(query+"\uf0ff");
+
+                FirebaseRecyclerOptions<PostMember> options =
+                        new FirebaseRecyclerOptions.Builder<PostMember>()
+                                .setQuery(search,PostMember.class)
+                                .build();
+
+                FirebaseRecyclerAdapter<PostMember,PostViewholder> firebaseRecyclerAdapter =
+                        new FirebaseRecyclerAdapter<PostMember, PostViewholder>(options) {
+                            @Override
+                            protected void onBindViewHolder(@NonNull PostViewholder holder, int position, @NonNull PostMember model) {
+
+                                final String postkey = getRef(position).getKey();
+
+                                holder.SetPost(getActivity(),model.getId(),model.getUrl(),model.getPostUri(),model.getTime(),model.getDate(),model.getUid(),
+                                        model.getType(),model.getDesc(),model.getTitle(),model.getName(),model.getPostkey());
+
+                                String name = getItem(position).getName();
+                                String url = getItem(position).getPostUri();
+                                String time = getItem(position).getTime();
+                                String type = getItem(position).getType();
+                                String id = getItem(position).getId();
+                                String userid = getItem(position).getUid();
+                                String desc = getItem(position).getDesc();
+                                String post_key = getItem(position).getPostkey();
+                                String title = getItem(position).getTitle();
+                                String desc_p = getItem(position).getDesc();
+
+                                holder.iv_post.setOnClickListener(v -> ShowPost(url,userid,postkey,name));
+
+                                holder.likechecker(postkey);
+                                holder.commentchecker(postkey);
+
+                                holder.tv_more.setOnClickListener(v -> showDialog(type,id,name,url,time,post_key,title,desc_p));
+
+                                holder.tv_like.setOnClickListener(v -> {
+                                    likechecker = true;
+
+                                    likesref.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                            if(likechecker.equals(true)){
+                                                if(snapshot.child(postkey).hasChild(currentuid)){
+                                                    likesref.child(postkey).child(currentuid).removeValue();
+                                                    likelist = database.getReference("like list").child(postkey).child(currentuid);
+                                                    likelist.removeValue();
+                                                    //delete(time);
+
+                                                    ntref.child(currentuid+"l").removeValue();
+                                                    likechecker = false;
+                                                }else{
+                                                    likesref.child(postkey).child(currentuid).setValue(true);
+                                                    likelist = database.getReference("like list").child(postkey);
+                                                    userMember.setName(name);
+                                                    userMember.setUid(currentuid);
+                                                    userMember.setUrl(url);
+
+                                                    likelist.child(currentuid).setValue(userMember);
+
+//                                                newMember.setName(name_result);
+//                                                newMember.setUid(currentUserid);
+//                                                newMember.setUrl(url_result);
+//                                                newMember.setSeen("no");
+//                                                newMember.setText("Like your post");
+//                                                newMember.setAction("L");
+//
+//                                                ntref.child(currentUserid+"l").setValue(newMember);
+//                                                sendNotification(name_result,userid);
+
+                                                    likechecker = false;
+                                                }
+                                            }
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+
+                                });
+
+                                holder.iv.setOnClickListener(v -> {
+                                    if (currentuid.equals(userid)) {
+//                                Intent intent = new Intent(getActivity(),MyProfileActivity.class);
+//                                startActivity(intent);
+
+                                    }else {
+                                        Intent intent = new Intent(getActivity(),ShowUser.class);
+                                        intent.putExtra("n",name);
+                                        intent.putExtra("u",url);
+                                        intent.putExtra("uid",userid);
+                                        startActivity(intent);
+                                    }
+                                });
+
+                                holder.commentbtn.setOnClickListener(view -> {
+                                    Intent intent = new Intent(getActivity(),CommentsActivity.class);
+                                    intent.putExtra("postkey",postkey);
+                                    intent.putExtra("name",name);
+                                    intent.putExtra("url",url);
+                                    intent.putExtra("uid",userid);
+                                    intent.putExtra("d",desc);
+                                    startActivity(intent);
+                                });
+
+
+
+                            }
+
+                            @NonNull
+                            @Override
+                            public PostViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                                View view = LayoutInflater.from(parent.getContext())
+                                        .inflate(R.layout.post_layout,parent,false);
+
+                                return new PostViewholder(view);
+                            }
+                        };
+
+                firebaseRecyclerAdapter.startListening();
+
+                recyclerView.setAdapter(firebaseRecyclerAdapter);
+
+            }
+        });
 
         FirebaseRecyclerOptions<PostMember> options =
                 new FirebaseRecyclerOptions.Builder<PostMember>()
@@ -264,6 +443,7 @@ public class DashboardFragment extends Fragment {
 
     }
 
+
     private void ShowPost(String url,String uid,String postkey,String name) {
         Intent intent = new Intent(getActivity(),ViewImage.class);
         intent.putExtra("i",uid);
@@ -360,16 +540,13 @@ public class DashboardFragment extends Fragment {
             alertDialog.dismiss();
         });
 
-        report.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ReportPost.class);
-                intent.putExtra("id_post",post_key);
-                intent.putExtra("id_report",currentuid);
-                intent.putExtra("t",title);
-                intent.putExtra("d",desc_p);
-                startActivity(intent);
-            }
+        report.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(),ReportPost.class);
+            intent.putExtra("id_post",post_key);
+            intent.putExtra("id_report",currentuid);
+            intent.putExtra("t",title);
+            intent.putExtra("d",desc_p);
+            startActivity(intent);
         });
 
 
