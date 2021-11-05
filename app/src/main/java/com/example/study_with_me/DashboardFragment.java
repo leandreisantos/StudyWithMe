@@ -27,6 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -52,12 +55,15 @@ public class DashboardFragment extends Fragment {
     DocumentReference documentReference;
 
     String currentuid;
+    TextView call;
 
 
     Boolean likechecker = false;
     public String interestResult="";
     AlluserMember userMember;
     NewMember newMember;
+
+    String urluser,nameuser;
 
     @Nullable
     @Override
@@ -69,18 +75,7 @@ public class DashboardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        Bundle extras = getActivity().getIntent().getExtras();
-//        if(extras != null){
-//            bundle_interest = extras.getString("i");
-//            reference = database.getReference("All post").child(bundle_interest);
-//        }else{
-//            reference = database.getReference("All post").child("public");
-//        }
-
-
         interest = getActivity().findViewById(R.id.tv_int_int);
-
-
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         currentuid = user.getUid();
@@ -89,13 +84,14 @@ public class DashboardFragment extends Fragment {
 
 
         likesref = database.getReference("post likes");
-        ntref = database.getReference("notification").child(currentuid);
+        ntref = database.getReference("notification");
         documentReference = db.collection("user").document(currentuid);
 
         reference_user = database.getReference("All users").child(currentuid);
 
         add_interest = getActivity().findViewById(R.id.tv_edit_int_dash);
         etSearch = getActivity().findViewById(R.id.et_search_dash);
+        call = getActivity().findViewById(R.id.tv_call_dash);
 
         userMember = new AlluserMember();
         newMember = new NewMember();
@@ -139,8 +135,10 @@ public class DashboardFragment extends Fragment {
                         startActivity(intent);
                     }else{
                         interestResult = task.getResult().getString("interest").toUpperCase();
+                        urluser = task.getResult().getString("url");
+                        nameuser = task.getResult().getString("name");
                         if(interestResult!=null){
-                            doActivity(interestResult);
+                            doActivity(interestResult,urluser,nameuser);
                         }
 
                     }
@@ -148,7 +146,7 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    private void doActivity(String interest_result) {
+    private void doActivity(String interest_result,String url_user,String name_user) {
 
 
         reference = database.getReference("All post").child(interest_result);
@@ -159,6 +157,12 @@ public class DashboardFragment extends Fragment {
 
         addTv.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(),CreatePost.class);
+            intent.putExtra("i",interest_result);
+            startActivity(intent);
+        });
+
+        call.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(),callActivity.class);
             intent.putExtra("i",interest_result);
             startActivity(intent);
         });
@@ -178,144 +182,30 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String query = etSearch.getText().toString();
-                Query search = reference.orderByChild("title").startAt(query).endAt(query+"\uf0ff");
-
-                FirebaseRecyclerOptions<PostMember> options =
-                        new FirebaseRecyclerOptions.Builder<PostMember>()
-                                .setQuery(search,PostMember.class)
-                                .build();
-
-                FirebaseRecyclerAdapter<PostMember,PostViewholder> firebaseRecyclerAdapter =
-                        new FirebaseRecyclerAdapter<PostMember, PostViewholder>(options) {
-                            @Override
-                            protected void onBindViewHolder(@NonNull PostViewholder holder, int position, @NonNull PostMember model) {
-
-                                final String postkey = getRef(position).getKey();
-
-                                holder.SetPost(getActivity(),model.getId(),model.getUrl(),model.getPostUri(),model.getTime(),model.getDate(),model.getUid(),
-                                        model.getType(),model.getDesc(),model.getTitle(),model.getName(),model.getPostkey());
-
-                                String name = getItem(position).getName();
-                                String url = getItem(position).getPostUri();
-                                String time = getItem(position).getTime();
-                                String type = getItem(position).getType();
-                                String id = getItem(position).getId();
-                                String userid = getItem(position).getUid();
-                                String desc = getItem(position).getDesc();
-                                String post_key = getItem(position).getPostkey();
-                                String title = getItem(position).getTitle();
-                                String desc_p = getItem(position).getDesc();
-
-                                holder.iv_post.setOnClickListener(v -> ShowPost(url,userid,postkey,name));
-
-                                holder.likechecker(postkey);
-                                holder.commentchecker(postkey);
-
-                                holder.tv_more.setOnClickListener(v -> showDialog(type,id,name,url,time,post_key,title,desc_p));
-
-                                holder.tv_like.setOnClickListener(v -> {
-                                    likechecker = true;
-
-                                    likesref.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                            if(likechecker.equals(true)){
-                                                if(snapshot.child(postkey).hasChild(currentuid)){
-                                                    likesref.child(postkey).child(currentuid).removeValue();
-                                                    likelist = database.getReference("like list").child(postkey).child(currentuid);
-                                                    likelist.removeValue();
-                                                    //delete(time);
-
-                                                    ntref.child(currentuid+"l").removeValue();
-                                                    likechecker = false;
-                                                }else{
-                                                    likesref.child(postkey).child(currentuid).setValue(true);
-                                                    likelist = database.getReference("like list").child(postkey);
-                                                    userMember.setName(name);
-                                                    userMember.setUid(currentuid);
-                                                    userMember.setUrl(url);
-
-                                                    likelist.child(currentuid).setValue(userMember);
-
-//                                                newMember.setName(name_result);
-//                                                newMember.setUid(currentUserid);
-//                                                newMember.setUrl(url_result);
-//                                                newMember.setSeen("no");
-//                                                newMember.setText("Like your post");
-//                                                newMember.setAction("L");
-//
-//                                                ntref.child(currentUserid+"l").setValue(newMember);
-//                                                sendNotification(name_result,userid);
-
-                                                    likechecker = false;
-                                                }
-                                            }
-
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-
-
-                                });
-
-                                holder.iv.setOnClickListener(v -> {
-                                    if (currentuid.equals(userid)) {
-//                                Intent intent = new Intent(getActivity(),MyProfileActivity.class);
-//                                startActivity(intent);
-
-                                    }else {
-                                        Intent intent = new Intent(getActivity(),ShowUser.class);
-                                        intent.putExtra("n",name);
-                                        intent.putExtra("u",url);
-                                        intent.putExtra("uid",userid);
-                                        startActivity(intent);
-                                    }
-                                });
-
-                                holder.commentbtn.setOnClickListener(view -> {
-                                    Intent intent = new Intent(getActivity(),CommentsActivity.class);
-                                    intent.putExtra("postkey",postkey);
-                                    intent.putExtra("name",name);
-                                    intent.putExtra("url",url);
-                                    intent.putExtra("uid",userid);
-                                    intent.putExtra("d",desc);
-                                    startActivity(intent);
-                                });
-
-
-
-                            }
-
-                            @NonNull
-                            @Override
-                            public PostViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-                                View view = LayoutInflater.from(parent.getContext())
-                                        .inflate(R.layout.post_layout,parent,false);
-
-                                return new PostViewholder(view);
-                            }
-                        };
-
-                firebaseRecyclerAdapter.startListening();
-
-                recyclerView.setAdapter(firebaseRecyclerAdapter);
-
+                showRec("s",interest_result,url_user,name_user);
             }
         });
 
-        FirebaseRecyclerOptions<PostMember> options =
-                new FirebaseRecyclerOptions.Builder<PostMember>()
-                        .setQuery(reference,PostMember.class)
-                        .build();
+        showRec("n",interest_result,url_user,name_user);
+
+    }
+
+    private void showRec(String keys,String interest,String urlUser,String nameUser) {
+        FirebaseRecyclerOptions<PostMember> options= null;
+
+        if(keys.equals("n")){
+                   options =
+                    new FirebaseRecyclerOptions.Builder<PostMember>()
+                            .setQuery(reference,PostMember.class)
+                            .build();
+        }else if(keys.equals("s")){
+            String query = etSearch.getText().toString();
+            Query search = reference.orderByChild("title").startAt(query).endAt(query+"\uf0ff");
+            options =
+                    new FirebaseRecyclerOptions.Builder<PostMember>()
+                            .setQuery(search,PostMember.class)
+                            .build();
+        }
 
         FirebaseRecyclerAdapter<PostMember,PostViewholder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<PostMember, PostViewholder>(options) {
@@ -337,6 +227,7 @@ public class DashboardFragment extends Fragment {
                         String post_key = getItem(position).getPostkey();
                         String title = getItem(position).getTitle();
                         String desc_p = getItem(position).getDesc();
+                        String url1 = getItem(position).getUrl();
 
                         holder.iv_post.setOnClickListener(v -> ShowPost(url,userid,postkey,name));
 
@@ -359,7 +250,7 @@ public class DashboardFragment extends Fragment {
                                             likelist.removeValue();
                                             //delete(time);
 
-                                            ntref.child(currentuid+"l").removeValue();
+                                            ntref.child(userid).child(post_key).removeValue();
                                             likechecker = false;
                                         }else{
                                             likesref.child(postkey).child(currentuid).setValue(true);
@@ -370,6 +261,30 @@ public class DashboardFragment extends Fragment {
 
                                             likelist.child(currentuid).setValue(userMember);
 
+                                            Calendar cdate = Calendar.getInstance();
+                                            SimpleDateFormat currentdate = new SimpleDateFormat("dd-MMMM-yyy");
+                                            final String savedate = currentdate.format(cdate.getTime());
+
+                                            Calendar ctime = Calendar.getInstance();
+                                            SimpleDateFormat currenttime =new SimpleDateFormat("HH-mm-ss");
+                                            final String savetime = currenttime.format(ctime.getTime());
+
+                                            String id1 = ntref.push().getKey();
+
+                                            newMember.setUrl(urlUser);
+                                            newMember.setName(nameUser);
+                                            newMember.setText(name + "Likes your post");
+                                            newMember.setUidsender(userid);
+                                            newMember.setAction("L");
+                                            newMember.setUiduser(currentuid);
+                                            newMember.setTime(savetime);
+                                            newMember.setDate(savedate);
+                                            newMember.setInterest(interest);
+                                            newMember.setTitle(title);
+                                            newMember.setIdPost(post_key);
+                                            newMember.setPostkey(id1);
+
+                                            ntref.child(userid).child(post_key).setValue(newMember);
 //                                                newMember.setName(name_result);
 //                                                newMember.setUid(currentUserid);
 //                                                newMember.setUrl(url_result);
@@ -411,12 +326,20 @@ public class DashboardFragment extends Fragment {
                         });
 
                         holder.commentbtn.setOnClickListener(view -> {
+
                             Intent intent = new Intent(getActivity(),CommentsActivity.class);
                             intent.putExtra("postkey",postkey);
                             intent.putExtra("name",name);
                             intent.putExtra("url",url);
                             intent.putExtra("uid",userid);
                             intent.putExtra("d",desc);
+
+                            intent.putExtra("url1",urlUser);
+                            intent.putExtra("name1",nameUser);
+                            intent.putExtra("uidsender",userid);
+                            intent.putExtra("interest",interest);
+                            intent.putExtra("title",title);
+                            intent.putExtra("idPost",post_key);
                             startActivity(intent);
                         });
 
@@ -438,8 +361,6 @@ public class DashboardFragment extends Fragment {
         firebaseRecyclerAdapter.startListening();
 
         recyclerView.setAdapter(firebaseRecyclerAdapter);
-
-
 
     }
 

@@ -53,6 +53,8 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    implementation ('org.jitsi.react:jitsi-meet-sdk:2.+') { transitive = true }
+
 
 
     //lottie

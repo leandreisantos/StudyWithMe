@@ -4,6 +4,7 @@
     package="com.example.study_with_me">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,10 @@
         android:theme="@style/Theme.Study_With_Me"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".InputInterestActivity"></activity>
+        <activity android:name=".VideoCallOutgoing"></activity>
+        <activity android:name=".VideoCallInComing" />
+        <activity android:name=".callActivity" />
+        <activity android:name=".InputInterestActivity" />
         <activity
             android:name=".EditProfile"
             android:exported="false" />
@@ -38,6 +42,13 @@
         </activity>
         <activity android:name=".MainActivity" />
 
+        <service
+            android:name=".FIrebaseMessagingServices"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <service
             android:name=".firebase.MessagingService"
             android:exported="false">

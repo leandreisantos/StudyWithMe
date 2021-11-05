@@ -5,13 +5,21 @@ public class NewMember {
     String url;
     String name;
     String text;
-    String uid;
-    String seen;
+    String uidsender;
     String action;
+    String uiduser;
+    String date;
+    String time;
+    String interest;
+    String title;
+    String idPost;
+    String postkey;
 
     public  NewMember(){
 
     }
+
+
 
     public String getUrl() {
         return url;
@@ -37,20 +45,12 @@ public class NewMember {
         this.text = text;
     }
 
-    public String getUid() {
-        return uid;
+    public String getUidsender() {
+        return uidsender;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getSeen() {
-        return seen;
-    }
-
-    public void setSeen(String seen) {
-        this.seen = seen;
+    public void setUidsender(String uidsender) {
+        this.uidsender = uidsender;
     }
 
     public String getAction() {
@@ -60,5 +60,63 @@ public class NewMember {
     public void setAction(String action) {
         this.action = action;
     }
+
+    public String getUiduser() {
+        return uiduser;
+    }
+
+    public void setUiduser(String uiduser) {
+        this.uiduser = uiduser;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(String idPost) {
+        this.idPost = idPost;
+    }
+
+    public String getPostkey() {
+        return postkey;
+    }
+
+    public void setPostkey(String postkey) {
+        this.postkey = postkey;
+    }
+
+
 
 }
