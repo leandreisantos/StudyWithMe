@@ -162,9 +162,10 @@ public class DashboardFragment extends Fragment {
         });
 
         call.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(),callActivity.class);
-            intent.putExtra("i",interest_result);
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(),callActivity.class);
+//            intent.putExtra("i",interest_result);
+//            startActivity(intent);
+            Toast.makeText(getActivity(), "Call function not available today", Toast.LENGTH_SHORT).show();
         });
 
         add_interest.setOnClickListener(v -> goToInt(interest_result));

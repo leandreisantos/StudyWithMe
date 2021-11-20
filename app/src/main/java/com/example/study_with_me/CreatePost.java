@@ -2,6 +2,7 @@ package com.example.study_with_me;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -42,6 +43,7 @@ public class CreatePost extends AppCompatActivity {
     ImageView iv;
 
     EditText title,desc;
+    CardView cv;
 
     databaseReference dbr = new databaseReference();
     FirebaseDatabase database = FirebaseDatabase.getInstance(dbr.keyDb());
@@ -81,6 +83,7 @@ public class CreatePost extends AppCompatActivity {
         post = findViewById(R.id.edit_profile);
         back = findViewById(R.id.tv_back_cp);
         upload = findViewById(R.id.tv_upload);
+        cv = findViewById(R.id.cv_iv);
 
         title = findViewById(R.id.et_title_cp);
         desc = findViewById(R.id.et_desc_cp);
@@ -112,8 +115,8 @@ public class CreatePost extends AppCompatActivity {
 
                 selectedUri = data.getData();
                 Picasso.get().load(selectedUri).into(iv);
+                cv.setVisibility(View.VISIBLE);
                 iv.setVisibility(View.VISIBLE);
-                upload.setVisibility(View.GONE);
                 type = "iv";
         }
 

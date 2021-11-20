@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/arrow_icon"
-                    android:background="@color/green"
+                    android:background="@color/red"
                     />
 
             </androidx.cardview.widget.CardView>
