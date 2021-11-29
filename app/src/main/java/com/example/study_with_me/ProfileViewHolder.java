@@ -25,6 +25,7 @@ public class ProfileViewHolder extends RecyclerView.ViewHolder {
     public String interestResult;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String currentuid = user.getUid();
+    ConstraintLayout cl;
 
 
     
@@ -37,10 +38,14 @@ public class ProfileViewHolder extends RecyclerView.ViewHolder {
         calluser = itemView.findViewById(R.id.tv_call_nli);
         dp = itemView.findViewById(R.id.iv_dp_uli);
         cv = itemView.findViewById(R.id.cl_nitem);
+        cl = itemView.findViewById(R.id.cl_nitem);
 
-        Picasso.get().load(url).into(dp);
-        nameuser.setText(name);
-
+        if(!currentuid.equals(uid)){
+            Picasso.get().load(url).into(dp);
+            nameuser.setText(name);
+        }else{
+            cl.setVisibility(View.GONE);
+        }
 
     }
 }

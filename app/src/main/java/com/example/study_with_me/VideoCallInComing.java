@@ -152,13 +152,13 @@ public class VideoCallInComing extends AppCompatActivity {
             model.setResponse(response);
             referenceVc.child("res").setValue(model);
             joinmeeting();
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    referenceVc.removeValue();
-                }
-            },3000);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    referenceVc.removeValue();
+//                }
+//            },3000);
 
 
         }else if (response.equals("no")){
